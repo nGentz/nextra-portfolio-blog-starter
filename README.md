@@ -26,9 +26,9 @@ This site was developed with [Nextra's blog template](https://github.com/shuding
 When building [my portfolio website](nickgentz.com), I was inspired by the many minimal next.js portfolio sites available, but wanted something that was free, lightweight, and easy to update with `.mdx` files. This need led to me building this template and wanting to make it *open source*.  
 
 #### Inspirations
-- [ganesh kumar](gktk.us)
-- [Max Leiter](https://maxleiter.com/)
 - [Henning Birgersson](https://www.henningbirgersson.com/)
+- [Ganesh Kumar](gktk.us)
+- [Max Leiter](https://maxleiter.com/)
 - [Nils Helmersson](https://nils.io/)
   
 ## Usage and License
