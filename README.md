@@ -3,9 +3,9 @@ Create your own Nextra 4.0+ / Next.js 15.3 / Tailwind CSS site for a blog or por
 
 Built using [Nextra's Blog Example](https://github.com/shuding/nextra/tree/c8238813e1ba425cdd72783d57707b0ff3ca52ea/examples/blog)
 
-Solarized Dark | Solarized Ocean | Solarized Light | Solarized Night
+Home (light) | Home (dark) | Works List (light) | Article (light)
 :-------------:|:---------------:|:----------------:|:----------------:
-![](https://...Dark.png) | ![](https://...Ocean.png) | ![](https://...Light.png) | ![](https://...Night.png) |
+![home_light](portfolio_starter_home.png) | ![home_dark](portfolio_starter_home_dark.png) | ![](https://...Light.png) | ![](https://...Night.png) |
 
 ## How to Install
 #### Local Development 
