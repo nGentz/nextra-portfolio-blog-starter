@@ -3,7 +3,7 @@ Create your own Nextra 4.0+ / Next.js 15.3 / Tailwind CSS site for a blog or por
 
 Built using [Nextra's Blog Example](https://github.com/shuding/nextra/tree/c8238813e1ba425cdd72783d57707b0ff3ca52ea/examples/blog)
 
-View live preview: (https://ngentz.github.io/nextra-portfolio-blog-starter/)
+View live preview: https://ngentz.github.io/nextra-portfolio-blog-starter/
 
 Home (light) | Home (dark)
 :------------:|:------------:
