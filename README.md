@@ -27,7 +27,7 @@ When building [my portfolio website](nickgentz.com), I was inspired by the many 
 
 #### Inspirations
 - [Henning Birgersson](https://www.henningbirgersson.com/)
-- [Ganesh Kumar](gktk.us)
+- [Ganesh Kumar](https://gktk.us/)
 - [Max Leiter](https://maxleiter.com/)
 - [Nils Helmersson](https://nils.io/)
   
