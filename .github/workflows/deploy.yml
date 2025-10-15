@@ -29,7 +29,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build static site
         env:
-          NEXT_BASE_PATH: /portfolio_pagesv3   # change if repo name differs
+          NEXT_BASE_PATH: /nextra-portfolio-blog-starter   # change if repo name differs
         run: |
           pnpm build
           touch out/.nojekyll
