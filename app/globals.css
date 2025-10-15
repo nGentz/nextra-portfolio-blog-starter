@@ -1,0 +1,488 @@
+@import "tailwindcss";
+
+:root {
+  --brand-start: #203a82;
+  --brand-end: #4f46e5;
+  --content-max: 800px; /* unified content width */
+  /* Light mode palette: highest contrast (black on white) */
+  --page-bg: #ffffff; /* true white background */
+  --page-surface: #ffffff;
+  --page-fg: #000000; /* primary text: black */
+  --page-muted: #000000; /* body text: black */
+  --page-subtle: #475569; /* secondary text (slate-600) */
+  --page-border: #e2e8f0; /* subtle borders (slate-200) */
+  /* Link hover color (light) */
+  --link-hover: #b1b1b1; /* rgb(177,177,177) */
+  /* Prefer Inter for theme defaults */
+  --x-default-font-family: var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.brand-gradient {
+  background-image: linear-gradient(90deg, var(--brand-start), var(--brand-end));
+}
+
+.nextra-tag {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none !important;
+}
+
+.nextra-tag:hover {
+  color: inherit;
+}
+
+html {
+  background-color: var(--page-bg);
+  color: var(--page-fg);
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+html.dark {
+  /* Darker, neutral greys for dark mode */
+  --page-bg: #141414; /* dark grey, not pitch black */
+  --page-surface: #1a1a1a; /* slightly lighter surface */
+  --page-fg: #f5f5f5;
+  --page-muted: #e5e5e5;
+  --page-subtle: #c7c7c7;
+  --page-border: #2f2f2f; /* softer grey dividers */
+  /* Link hover color (dark) */
+  --link-hover: #7f7f7f;
+  color-scheme: dark;
+}
+
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+    background-color: var(--page-bg);
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply antialiased;
+    font-family: var(--font-inter, Inter, ui-sans-serif), ui-sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: var(--page-bg);
+    color: var(--page-fg);
+    font-feature-settings: 'ss01', 'cv02', 'cv11';
+    line-height: 1.65;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  a {
+    color: var(--page-fg);
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+  }
+
+  a:visited { color: var(--page-fg); }
+
+  a:hover:not(.subheading-anchor) {
+    color: var(--link-hover) !important;
+    text-decoration: none !important;
+  }
+
+  html.dark a { color: var(--page-fg); }
+  html.dark a:visited { color: var(--page-fg); }
+
+  [data-article-root] a,
+  [data-article-root] a:visited {
+    color: var(--page-fg);
+    text-decoration: none !important;
+  }
+
+  [data-article-root] a:hover:not(.subheading-anchor) {
+    color: var(--link-hover) !important;
+    text-decoration: none !important;
+  }
+
+  html.dark [data-article-root] a,
+  html.dark [data-article-root] a:visited {
+    color: var(--page-fg);
+    text-decoration: none !important;
+  }
+
+  html.dark [data-article-root] a:hover:not(.subheading-anchor) {
+    color: #bfdbfe;
+    text-decoration: none !important;
+  }
+
+  /* Make heading "#" anchor hashes lighter/softer than text */
+  .subheading-anchor {
+    color: color-mix(in oklab, var(--page-fg) 45%, transparent) !important;
+    text-decoration: none !important;
+  }
+  .subheading-anchor::before {
+    color: color-mix(in oklab, var(--page-fg) 45%, transparent) !important; /* ensure pseudo-element matches */
+  }
+  .subheading-anchor:hover,
+  :is(h1,h2,h3,h4,h5,h6):hover > .subheading-anchor {
+    /* Lighter, more transparent on hover */
+    color: color-mix(in oklab, var(--page-fg) 30%, transparent) !important;
+  }
+  .subheading-anchor:hover::before,
+  :is(h1,h2,h3,h4,h5,h6):hover > .subheading-anchor::before {
+    color: color-mix(in oklab, var(--page-fg) 30%, transparent) !important;
+  }
+
+  /* Ensure our anchor color wins inside article content over generic link hovers */
+  [data-article-root] .subheading-anchor,
+  [data-article-root] .subheading-anchor::before {
+    color: color-mix(in oklab, var(--page-fg) 45%, transparent) !important;
+  }
+  [data-article-root] :is(h1,h2,h3,h4,h5,h6):hover > .subheading-anchor,
+  [data-article-root] :is(h1,h2,h3,h4,h5,h6) > .subheading-anchor:hover,
+  [data-article-root] :is(h1,h2,h3,h4,h5,h6):hover > .subheading-anchor::before,
+  [data-article-root] :is(h1,h2,h3,h4,h5,h6) > .subheading-anchor:hover::before {
+    color: color-mix(in oklab, var(--page-fg) 30%, transparent) !important;
+  }
+
+  ::selection {
+    background-color: #e5e7eb; /* neutral light gray */
+    color: #111827; /* near-black */
+  }
+
+  html.dark ::selection {
+    background-color: #2a2a2a; /* neutral dark gray */
+    color: #f5f5f5; /* near-white */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0; /* remove UA margins */
+    font-weight: 500; /* Inter 500 for headings */
+    letter-spacing: -0.015em;
+    color: var(--page-fg);
+  }
+
+  p,
+  li {
+    color: var(--page-muted);
+  }
+
+  hr {
+    border-color: var(--page-border);
+  }
+
+  /* Ensure anchors scroll headings near the top, consistently */
+  [data-article-root] :is(h1, h2, h3, h4, h5, h6) {
+    scroll-margin-top: 24px;
+  }
+
+  /* Remove bottom padding on the main article container */
+  [data-article-root] {
+    padding-bottom: 0 !important;
+  }
+
+  [data-article-root] pre {
+    /* Match Nextra header radius/color for no-header code blocks */
+    border-radius: 0.375rem; /* rounded-md */
+    background-color: #000000; /* pure black to match theme dark code */
+    border: 1px solid #404040; /* neutral-700 */
+  }
+
+  html:not(.dark) [data-article-root] pre {
+    background-color: #ffffff; /* white to match wrapper/header */
+    color: #111827; /* near-black */
+    border: 1px solid #d1d5db; /* gray-300 to match header */
+  }
+
+  /* Code blocks with a header/title (.nextra-code):
+     put the visible outline on the wrapper to match the header color/width,
+     remove outer edges from children to avoid doubles, and keep the internal seam. */
+  /* Only apply outer outline to the wrapper element, not the <code> tag
+     (both share the class name 'nextra-code' in Nextra markup). We key on
+     the prefixed utility present on the wrapper: .x:relative */
+  [data-article-root] .nextra-code.x\:relative {
+    border: 1px solid #404040; /* dark: neutral-700 */
+    border-radius: 0.375rem; /* rounded-md */
+  }
+
+  html:not(.dark) [data-article-root] .nextra-code.x\:relative {
+    border-color: #d1d5db; /* light: gray-300 */
+  }
+  [data-article-root] .nextra-code pre {
+    /* Remove outer edges; wrapper provides the outline */
+    border: 0 !important;
+    /* Remove Nextra/Tailwind ring that looks like a 1px border */
+    box-shadow: none !important;
+    outline: none;
+    /* Clip backgrounds to match wrapper corners at bottom */
+    border-radius: 0;
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+  }
+
+  /* Ensure the inner <code class="nextra-code"> element never draws a second border */
+  [data-article-root] pre > code.nextra-code {
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  /* Ensure light-mode variant also has no ring */
+  html:not(.dark) [data-article-root] .nextra-code pre {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Header row: keep only the internal seam; drop outer edges to avoid doubles */
+  [data-article-root] .nextra-code > div:first-child {
+    border-left-width: 0 !important;
+    border-right-width: 0 !important;
+    border-top-width: 0 !important;
+    border-bottom-width: 1px !important;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+  }
+
+  /* Ensure the header bar (language/title row) keeps its bottom border
+     so it visually outlines the whole block. Nextra uses a prefixed
+     utility class name with a colon; escape it in CSS. */
+  [data-article-root] .nextra-code .x\:border-b-0 {
+    border-bottom-width: 1px !important;
+  }
+
+  code {
+    font-feature-settings: 'ss02', 'cv05';
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+@layer components {
+  /* Ensure theme's generic article padding is removed within our pages */
+  .page-container article {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Shared page container: consistent width and horizontal padding */
+  .page-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    /* Global content width */
+    max-width: min(100%, var(--content-max));
+    padding-left: 1.25rem; /* px-5 */
+    padding-right: 1.25rem; /* px-5 */
+  }
+
+  @media (min-width: 640px) {
+    .page-container {
+      padding-left: 2rem; /* sm:px-8 */
+      padding-right: 2rem; /* sm:px-8 */
+    }
+  }
+
+  /* Make content a bit wider on desktop */
+  @media (min-width: 1024px) { /* lg */
+    .page-container {
+      max-width: min(100%, var(--content-max));
+    }
+  }
+
+  @media (min-width: 1280px) { /* xl */
+    .page-container {
+      max-width: min(100%, var(--content-max));
+    }
+  }
+
+  /* Shared vertical spacing for top/bottom rhythm */
+  .page-vertical {
+    /* Vertical rhythm for pages (doubled from base) */
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-vertical {
+      padding-top: 5rem; /* slightly reduced from sm:py-24 */
+      padding-bottom: 6rem; /* sm:py-24 */
+    }
+  }
+  /* Keep breadcrumb area a consistent height to prevent layout shift */
+  .breadcrumb-nav {
+    min-height: 28px; /* one-line height buffer */
+    display: block;
+  }
+
+  /* Article title: remove bottom spacing on the first heading in article prose */
+  [data-article-root] .prose > :is(h1, h2, h3, h4, h5, h6):first-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Safety net: any heading explicitly marked with mb-0 should have no bottom spacing */
+  [data-article-root] :is(h1, h2, h3, h4, h5, h6).mb-0 {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Tailwind Typography (prefixed) variant used by Nextra: ensure first heading has no bottom spacing */
+  [data-article-root] .x\:prose > :where(h1, h2, h3, h4, h5, h6):first-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* And any heading inside the prose that explicitly has mb-0 should win over typography defaults */
+  [data-article-root] .x\:prose :where(h1, h2, h3, h4, h5, h6).mb-0 {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    font-weight: 500 !important; /* Inter 500 */
+  }
+
+  /* Ensure page titles using utility font-medium are rendered at Inter 500,
+     overriding Typography's h1 weight 800. This is narrow to h1.font-medium
+     so it doesn't affect other headings in content. */
+  [data-article-root] .x\:prose h1.font-medium {
+    font-weight: 500 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* If the first child in prose is a wrapper (e.g. div around the title),
+     remove its bottom margin and the next block's top margin to avoid gaps. */
+  [data-article-root] .x\:prose > *:first-child {
+    margin-bottom: 0 !important;
+  }
+  [data-article-root] .x\:prose > *:first-child + * {
+    margin-top: 0 !important;
+  }
+
+  /* Non-prose safety: any h1 with mb-0 under article should be weight 500 and no bottom spacing */
+  [data-article-root] h1.mb-0 {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    font-weight: 500 !important;
+  }
+
+  /* Utility override: shrink py-8 spacing (was ~2rem each side in Tailwind).
+     Keep it small site-wide to tighten the footer rhythm. */
+  .py-8 {
+    padding-block: calc(var(--spacing) * 2) !important; /* 0.5rem total top/bottom */
+  }
+
+  /* Theme switch (light/dark/system) — easy manual overrides */
+  .site-footer-theme-segment {
+    background-color: rgba(245, 245, 245, 0.9) !important; /* neutral light */
+  }
+
+  html.dark .site-footer-theme-segment {
+    background-color: rgba(58, 58, 58, 0.4) !important; /* neutral dark */
+    border-color: rgba(255, 255, 255, 0.145) !important; /* darker, neutral white border */
+  }
+
+  /* Active button (aria-pressed=true) */
+  .site-footer-theme-segment button[aria-pressed='true'] {
+    background-color: #ffffff !important;
+    color: #111827 !important; /* near-black */
+    border: 1px solid #e5e7eb !important; /* ring-slate-200 */
+    box-shadow: none !important;
+  }
+
+  html.dark .site-footer-theme-segment button[aria-pressed='true'] {
+    background-color: #3a3a3a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important; /* dark ring */
+    box-shadow: none !important;
+  }
+
+  /* Inactive buttons */
+  .site-footer-theme-segment button[aria-pressed='false'] {
+    color: #9f9f9f !important; /* neutral gray */
+  }
+  .site-footer-theme-segment button[aria-pressed='false']:hover {
+    color: #111827 !important; /* hover darker in light */
+  }
+
+  html.dark .site-footer-theme-segment button[aria-pressed='false'] {
+    color: #b3b3b3 !important; /* neutral gray */
+  }
+  html.dark .site-footer-theme-segment button[aria-pressed='false']:hover {
+    color: #ffffff !important; /* hover white in dark */
+  }
+
+  .breadcrumb-list {
+    padding-left: 0;
+    margin-left: 0;
+    list-style: none;
+  }
+
+  .breadcrumb-list > li {
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .article-prose {
+    width: 100%;
+    /* Align prose width with the site container for consistent pages */
+    max-width: var(--content-max);
+    margin-left: auto;
+    margin-right: auto;
+    --tw-prose-body: var(--page-muted);
+    --tw-prose-headings: var(--page-fg);
+    --tw-prose-links: var(--page-fg);
+    --tw-prose-bold: var(--page-fg);
+    --tw-prose-code: var(--page-fg);
+    --tw-prose-quotes: var(--page-muted);
+    --tw-prose-quote-borders: var(--page-border);
+    --tw-prose-counters: var(--page-subtle);
+    --tw-prose-hr: var(--page-border);
+    --tw-prose-th-borders: var(--page-border);
+    --tw-prose-td-borders: var(--page-border);
+  }
+
+  /* Remove extra top/bottom margins from prose content to avoid header jumps */
+  .article-prose > :first-child {
+    margin-top: 0 !important;
+  }
+  .article-prose > :last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .inline-badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium text-black transition-colors; /* black text in light mode */
+    background-color: rgba(148, 163, 184, 0.18);
+    border: none !important; /* remove pill border */
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace);
+  }
+
+  .dark .inline-badge {
+    @apply text-white;
+    background-color: rgba(71, 85, 105, 0.32);
+    border: none !important; /* ensure no border in dark */
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace);
+  }
+
+  /* Improve readability of navbar current link in light mode */
+  header[data-pagefind-ignore="all"] a[aria-current] {
+    opacity: 0.9;
+  }
+
+  /* Footer link tone and weight override (avoid Typography link vibrancy) */
+  .site-footer a,
+  .site-footer a:visited {
+    color: color-mix(in oklab, var(--page-fg) 55%, transparent) !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+  }
+
+  .site-footer a:hover {
+    color: var(--link-hover) !important;
+    text-decoration: none !important;
+  }
+
+  /* Removed older theme segment slate styles to avoid blue tint in dark mode */
+}

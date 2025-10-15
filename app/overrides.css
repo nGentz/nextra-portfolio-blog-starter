@@ -1,0 +1,486 @@
+/*
+  overrides.css — your manual CSS that always wins.
+
+  This file is imported LAST in app/layout.jsx so anything you put here
+  will override theme/Tailwind/typography defaults. Use it for small,
+  surgical fixes without fighting the cascade elsewhere.
+
+  Tips:
+  - Escape Nextra's prefixed utilities in selectors: `.x\:prose`, `.x\:ring-1`.
+  - Use `[data-article-root]` to scope to article pages only.
+  - Add `!important` when a utility or inline style still wins.
+*/
+
+/* Add your overrides below */
+
+/* Reserve scrollbar gutter so centered content doesn't shift between
+   pages with and without vertical scrollbars (fixes ~7px margin drift). */
+html {
+  overflow-y: scroll;              /* always reserve vertical scrollbar space */
+  scrollbar-gutter: stable;        /* consistent layout across pages */
+}
+
+/* Unify container horizontal padding via a single variable to avoid rounding drift */
+:root {
+  --container-px: 1.25rem; /* base px-5 */
+}
+@media (min-width: 640px) {
+  :root { --container-px: 2rem; } /* sm:px-8 */
+}
+
+/* Code block links: ensure anchors are styled and clickable, add ↗ for external */
+[data-article-root] .nextra-code a {
+  pointer-events: auto !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+[data-article-root] .nextra-code a[href^="http"] {
+  color: #2563eb !important; /* blue-600 for light */
+}
+
+html.dark [data-article-root] .nextra-code a[href^="http"] {
+  color: #60a5fa !important; /* blue-400 for dark */
+}
+
+[data-article-root] .nextra-code a[href^="http"]::after {
+  content: "\2197"; /* ↗ */
+  margin-left: 0.2em;
+  font-size: 0.9em;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* Global link color override: only for external links */
+a[href^="http"] {
+  color: #2563eb !important;
+}
+html.dark a[href^="http"] {
+  color: #60a5fa !important;
+}
+
+/* Make horizontal rules and generic content dividers a soft grey in dark mode */
+[data-article-root] hr,
+[data-article-root] .prose hr {
+  border-color: var(--page-border) !important;
+}
+
+/* Override Tailwind divide utilities inside article content to use our page border */
+[data-article-root] .divide-y > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--page-border) !important;
+}
+
+/* Normalize generic borders within article content */
+[data-article-root] :is(.border, .border-y, .border-t, .border-b) {
+  border-color: var(--page-border) !important;
+}
+
+/* Ensure dark-mode separators across the main page container use soft grey */
+html.dark .page-container :is(hr, .border, .border-y, .border-t, .border-b) {
+  border-color: var(--page-border) !important;
+}
+html.dark .page-container .divide-y > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--page-border) !important;
+  border-top-color: var(--page-border) !important; /* explicitly override top edge */
+}
+
+/* Stronger selector: make sure the first visible separator (top border of the 2nd item) is grey */
+html.dark .page-container .divide-y > * + * {
+  border-top-color: var(--page-border) !important;
+}
+
+/* Match your desired darker grey exactly for list separators and list container borders */
+html.dark .page-container :is(ul.divide-y, ol.divide-y) > * + * {
+  border-top-color: #404040 !important;
+}
+html.dark .page-container :is(ul.border-y, ol.border-y) {
+  border-top-color: #404040 !important;
+  border-bottom-color: #404040 !important;
+}
+
+/* Force the very first separator (top border of 2nd item) to #404040 in dark */
+html.dark .page-container ul.divide-y > li + li,
+html.dark .page-container ol.divide-y > li + li {
+  border-top-color: #404040 !important;
+  border-top-width: 1px !important;
+  border-top-style: solid !important;
+}
+
+/* Normalize list spacing across light/dark: identical border widths + paddings */
+.page-container :is(ul.divide-y, ol.divide-y) > * + * {
+  border-top-width: 1px !important;
+  border-top-style: solid !important;
+}
+.page-container :is(ul.divide-y, ol.divide-y) > li {
+  /* Prevent bottom borders on items so seams don't double up */
+  border-bottom-width: 0 !important;
+  border-bottom-style: none !important;
+}
+.page-container :is(ul.divide-y, ol.divide-y) > li > a {
+  /* Ensure anchors inside rows don't add borders that change perceived thickness */
+  border: 0 !important;
+}
+.page-container :is(ul.border-y, ol.border-y) {
+  border-top-width: 1px !important;
+  border-bottom-width: 1px !important;
+  border-style: solid !important;
+}
+.page-container :is(ul.divide-y, ol.divide-y) > li {
+  margin: 0 !important;
+}
+.page-container :is(ul.divide-y, ol.divide-y) > li > a {
+  padding-top: 1rem !important;   /* py-4 */
+  padding-bottom: 1rem !important;/* py-4 */
+}
+
+/* Light mode: force neutral grey separators so no stray black line appears */
+html:not(.dark) .page-container :is(ul.divide-y, ol.divide-y) > * + * {
+  border-top-color: #e5e7eb !important; /* slate-200 */
+}
+html:not(.dark) .page-container :is(ul.border-y, ol.border-y) {
+  border-top-color: #e5e7eb !important;
+  border-bottom-color: #e5e7eb !important;
+}
+
+/* Ensure list containers specifically use soft grey borders in dark mode */
+html.dark .page-container :is(ul, ol).border-y {
+  border-top-color: var(--page-border) !important;
+  border-bottom-color: var(--page-border) !important;
+}
+html.dark .page-container :is(ul, ol).border-b {
+  border-bottom-color: var(--page-border) !important;
+}
+
+/* Footer: match separator colors to list separators for consistency */
+html:not(.dark) .site-footer :is(.border, .border-y, .border-t, .border-b) {
+  border-color: #e5e7eb !important; /* slate-200 in light */
+}
+html.dark .site-footer :is(.border, .border-y, .border-t, .border-b) {
+  border-color: var(--page-border) !important; /* use 2f2f2f per theme */
+}
+
+/* Heading hash anchors: force lighter color and hover in all contexts */
+.subheading-anchor::after {
+  color: color-mix(in oklab, var(--page-fg) 45%, transparent) !important;
+}
+:is(h1,h2,h3,h4,h5,h6):hover > .subheading-anchor::after,
+.subheading-anchor:hover::after {
+  color: color-mix(in oklab, var(--page-fg) 30%, transparent) !important;
+}
+[data-article-root] .subheading-anchor::after {
+  color: color-mix(in oklab, var(--page-fg) 45%, transparent) !important;
+}
+[data-article-root] :is(h1,h2,h3,h4,h5,h6):hover > .subheading-anchor::after,
+[data-article-root] .subheading-anchor:hover::after {
+  color: color-mix(in oklab, var(--page-fg) 30%, transparent) !important;
+}
+
+/* Make project/post dates a bit smaller in lists */
+.page-container a > time,
+.page-container time.text-sm {
+  font-size: 0.75rem !important; /* text-xs */
+  line-height: 1rem !important;  /* leading-4 */
+}
+
+.x\:prose {
+    :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--tw-prose-headings);
+        font-weight: 800;
+        font-size: 2.25em;
+        margin-top: 0;
+        /* margin-bottom: 0.8888889em; */
+        line-height: 1.1111111;
+    }
+}
+
+.x\:prose {
+    & :where(h1):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+        color: var(--tw-prose-headings);
+        font-weight: 600;
+        font-size: 1.7em;
+        margin-bottom: .8em;
+    }
+}
+
+.x\:prose {
+    :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--tw-prose-headings);
+        margin-bottom: 0em;
+    }
+}
+
+.x\:prose {
+    :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--tw-prose-headings);
+        font-weight: 600; /* match h3 weight */
+        font-size: 1.45em; /* larger than h3 (1.25em), smaller than h1 (1.7em) */
+        margin-top: 0em; /* tighter spacing */
+        margin-bottom: 0.6em; /* small bottom margin like h3 */
+        line-height: 1.3333333;
+    }
+}
+
+/* Ensure article content h2 spacing is tight regardless of upstream typography */
+[data-article-root] .x\:prose :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 1.25em !important;
+  margin-bottom: 0.6em !important;
+}
+
+/* Explicit heading weights for article content */
+[data-article-root] .x\:prose :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  font-weight: 600 !important; /* requested: h1 = 600 */
+}
+[data-article-root] .prose :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  font-weight: 600 !important; /* mirror for prose variant */
+}
+[data-article-root] .x\:prose :where(h3):not(:where([class~="not-prose"],[class~="not-prose"] *)),
+[data-article-root] .x\:prose :where(h4):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  font-weight: 500 !important; /* requested: h3/h4 = 500 */
+}
+[data-article-root] .prose :where(h3):not(:where([class~="not-prose"],[class~="not-prose"] *)),
+[data-article-root] .prose :where(h4):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  font-weight: 500 !important; /* mirror for prose variant */
+}
+
+/* H1 bottom spacing: ensure readable gap below H1 in content */
+[data-article-root] .x\:prose :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-bottom: 0.8em !important;
+}
+[data-article-root] .prose :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-bottom: 0.8em !important; /* mirror for prose variant */
+}
+/* If the H1 is the first child in prose, restore the bottom margin (override earlier resets) */
+[data-article-root] .x\:prose > :where(h1):first-child {
+  margin-bottom: 0.8em !important;
+}
+[data-article-root] .prose > :is(h1):first-child {
+  margin-bottom: 0.8em !important;
+}
+
+/* Stronger final safety net for h1 margin in article content */
+[data-article-root] :is(.prose, .x\:prose) h1 {
+  margin-bottom: 0.8em !important;
+}
+[data-article-root] h1.text-2xl.font-semibold {
+  margin-bottom: 0.8em !important;
+}
+
+/* Align H2 spacing for prose variant as well */
+[data-article-root] .prose :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 1.25em !important;
+  margin-bottom: 0.6em !important;
+}
+
+/* Code blocks: add bottom spacing on the OUTER wrapper, not the <pre> */
+[data-article-root] .nextra-code.x\:relative {
+  margin-bottom: 1.25em !important;
+}
+[data-article-root] pre {
+  margin-bottom: 0 !important; /* keep code area flush; spacing lives on wrapper */
+}
+/* Also ensure any .nextra-code wrapper (with or without x:relative) adds spacing */
+/* Do NOT affect inline code (also uses .nextra-code); only wrapper/pre get spacing. */
+
+/* Code blocks (dark): unify wrapper + header bar background with code area */
+/* Dark: keep header bar a grey tone, code area black */
+html.dark [data-article-root] .nextra-code.x\:relative {
+  background-color: transparent !important; /* let pre define the code bg */
+}
+html.dark [data-article-root] .nextra-code.x\:relative > div:first-child {
+  background-color: #121212 !important; /* grey header bar */
+  color: #e5e5e5 !important; /* readable */
+  border-bottom-color: #404040 !important; /* seam color */
+}
+/* Code blocks (light): unify wrapper + header bar background with code area */
+/* Light: header bar light grey, code area white */
+html:not(.dark) [data-article-root] .nextra-code.x\:relative {
+  background-color: transparent !important; /* let pre be white */
+}
+html:not(.dark) [data-article-root] .nextra-code.x\:relative > div:first-child {
+  background-color: #f5f5f5 !important; /* light grey header */
+  color: #374151 !important;
+  border-bottom-color: #d1d5db !important; /* seam color */
+}
+
+/* Steps component: restore comfortable heading spacing inside steps */
+[data-article-root] .nextra-steps :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 1.25em !important;
+  margin-bottom: 0.6em !important;
+}
+[data-article-root] .nextra-steps :where(h3):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 1em !important;
+  margin-bottom: 0.5em !important;
+}
+[data-article-root] .nextra-steps :where(h4):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0.85em !important;
+  margin-bottom: 0.45em !important;
+}
+
+/* Details/Summary block: consistent outer spacing and summary title alignment */
+[data-article-root] details {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+}
+[data-article-root] details > summary > h3 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+}
+
+/* Add spacing between certain adjacent Nextra components on components page */
+[data-article-root] .nextra-callout + .nextra-steps {
+  margin-top: 1.75em !important;
+}
+[data-article-root] .nextra-callout + :is(h1,h2,h3,h4,h5,h6) {
+  margin-top: 1.75em !important;
+}
+[data-article-root] .nextra-filetree + :is(h1,h2,h3,h4,h5,h6) {
+  margin-top: 1.75em !important;
+}
+
+/* Tabs: add bottom spacing after the tab content block */
+[data-article-root] .nextra-scrollbar[role="tablist"] + div {
+  margin-bottom: 1.25em !important;
+}
+
+/* Cards grid: add bottom spacing below the card group */
+[data-article-root] .nextra-cards {
+  margin-bottom: 1.25em !important;
+}
+
+/* Word highlight inside code (e.g., /hello/): restore blue-ish highlight */
+html.dark [data-article-root] :is(pre, code, .nextra-code) mark {
+  color: #ffffff !important; /* white text in dark */
+  background-color: rgba(96, 165, 250, 0.28) !important; /* blue-400 @ ~28% */
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+html:not(.dark) [data-article-root] :is(pre, code, .nextra-code) mark {
+  color: #111827 !important; /* near-black text in light */
+  background-color: rgba(37, 99, 235, 0.16) !important; /* blue-600 @ ~16% */
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+/* Extra specificity for Shiki word-highlights */
+[data-article-root] mark[data-highlighted-chars] {
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.space-y-7 {
+    :where(& > :not(:last-child)) {
+        --tw-space-y-reverse: 0;
+        margin-block-end: 1em;
+    }
+}
+
+article {
+    padding-bottom: 0 !important;
+}
+
+/* Normalize <article> margins across all pages so content starts
+   at the same vertical position regardless of theme classes */
+.page-container > article,
+.page-container article,
+article.x\:container > div[style*="max-width"] > article,
+article.mt-12 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.x\:prose {
+    max-width: var(--content-max) !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Ensure typography wrappers don't narrow content inconsistently across pages */
+.page-container .prose {
+  max-width: 100% !important; /* fill the container width */
+}
+.page-container .x\:prose {
+  max-width: 100% !important; /* fill the container width */
+}
+
+/* Ensure MDX prose fills its container and doesn't add extra centering margins */
+article.x\:container > div[style*="max-width"] .x\:prose {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+article.x\:container > div[style*="max-width"] .article-prose {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.x\:prose {
+    :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        font-weight: 400;
+    }
+}
+
+/* Normalize MDX (Nextra) page container to match home page container
+   Home uses `page-container` with `--content-max: 800px`, `px-5 sm:px-8`.
+   Nextra wraps MDX pages with an <article class="x:container x:px-4 ...">
+   and a nested <div style="max-width:min(100%, 768px)" class="px-6 sm:px-10 ...">.
+   Force that wrapper to use the same width and paddings as home. */
+article.x\:container {
+  padding-left: 0 !important;  /* neutralize x:px-4 */
+  padding-right: 0 !important;
+}
+/* Standardize the content wrapper inside Nextra's article to match home */
+article.x\:container > :is(div, main)[style*="max-width"] {
+  box-sizing: border-box;
+  max-width: min(100%, var(--content-max)) !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--container-px) !important;
+  padding-right: var(--container-px) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Catch variants that don't use inline style but rely on utility classes */
+article.x\:container > :is(div, main).mx-auto,
+article.x\:container > :is(div, main)[class*="mx-auto"] {
+  box-sizing: border-box;
+  max-width: min(100%, var(--content-max)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--container-px) !important;
+  padding-right: var(--container-px) !important;
+}
+@media (min-width: 640px) {
+  article.x\:container > :is(div, main)[style*="max-width"] {
+    padding-left: var(--container-px) !important;
+    padding-right: var(--container-px) !important;
+  }
+}
+
+/* Force the same padding on your own page container using the same variable */
+.page-container {
+  padding-left: var(--container-px) !important;
+  padding-right: var(--container-px) !important;
+}
+
+.x\:prose {
+    :where(p):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+}
+
+.x\:prose {
+    :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+        color: var(--tw-prose-headings);
+        margin-top: .5em;
+    }
+}
