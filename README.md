@@ -5,7 +5,7 @@ Built using [Nextra's Blog Example](https://github.com/shuding/nextra/tree/c8238
 
 Home (light) | Home (dark) | Works List (light) | Article (light)
 :-------------:|:---------------:|:----------------:|:----------------:
-![home_light](portfolio_starter_home.png) | ![home_dark](portfolio_starter_home_dark.png) | ![](https://...Light.png) | ![](https://...Night.png) |
+![home_light](portfolio_starter_home.png) | ![home_dark](portfolio_starter_home_dark.png) | ![works_light](portfolio_starter_works.png) | ![article_light](aarons_article_light.png) |
 
 ## How to Install
 #### Local Development 
