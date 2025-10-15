@@ -28,6 +28,7 @@ export default async function RootLayout({ children }) {
       <Head backgroundColor={{ dark: '#141414', light: '#ffffff' }} />
       <body suppressHydrationWarning>
         <Layout>
+          <ScrollFixes /> 
           {children}
           <SiteFooter />
         </Layout>
